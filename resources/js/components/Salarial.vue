@@ -2,18 +2,18 @@
     <v-card class="ma-5" :loading="loading" elevation="8">
         <v-card-title v-text="'Cálculo Salarial'"/>
         <v-card-text>
-            <v-form @submit.prevent="run">
+            <v-form @submit.prevent="run" ref="form">
                 <v-container fluid>
-                    <v-card class="pa-5 mb-10" elevation="10">
+                    <v-card class="pa-5 mb-10" elevation="10" color="#121212">
                         <v-row>
                             <v-col>
-                                <v-card color="#121212" elevation="8" :title="printBruto"/>
+                                <v-card color="#121212" elevation="1" :title="printBruto"/>
                             </v-col>
                             <v-col>
-                                <v-card color="#121212" elevation="8" :title="printFamilia"/>
+                                <v-card color="#121212" elevation="1" :title="printFamilia"/>
                             </v-col>
                             <v-col>
-                                <v-card color="#121212" elevation="8" :title="printLiquido"/>
+                                <v-card color="#121212" elevation="1" :title="printLiquido"/>
                             </v-col>
                         </v-row>
                     </v-card>
@@ -45,6 +45,7 @@
                                 type="number"
                                 variant="solo-filled"
                                 class="input-group--focused"
+                                :rules="[rules.decimal]"
                                 :label="input.children.label"
                                 v-model="input.children.value"
                             />
@@ -88,9 +89,10 @@ export default {
             }
         },
         rules: {
-            required: v => !!v || 'Obrigatório.',
             min: v => v >= 1 || 'Mínimo um',
+            required: v => !!v || 'Obrigatório.',
             minMoney: v => toFloat(v) >= 1 || 'Mínimo R$1,00',
+            decimal: v => parseFloat(v) === parseInt(v, 10) || 'Somente números inteiros',
         },
         money: {
             decimal: ',',
@@ -121,12 +123,15 @@ export default {
     },
     methods: {
         async run() {
-            this.loading = true;
-            let price = this.input.price.value;
-            let hours = this.input.hours.value;
-            let children = this.input.children.value;
-            this.result = await service.ex01(toFloat(price), hours, children);
-            this.loading = false;
+            let {valid} = await this.$refs.form.validate();
+            if (valid) {
+                this.loading = true;
+                let price = this.input.price.value;
+                let hours = this.input.hours.value;
+                let children = this.input.children.value;
+                this.result = await service.ex01(toFloat(price), parseFloat(hours), children);
+                this.loading = false;
+            }
         }
     }
 }

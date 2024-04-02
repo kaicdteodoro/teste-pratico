@@ -1,20 +1,13 @@
-class MainService {
+import {Service} from "./service.js";
+
+class MainService extends Service {
     async ex01(price, hours, children) {
-        let familia = 0;
-        let bruto = price * hours;
-        switch (true) {
-            default:
-                return undefined
-            case (bruto <= 788):
-                familia = 30.5 * children;
-                break;
-            case (bruto > 788 && bruto <= 1100):
-                familia = 18.5 * children;
-                break;
-            case (bruto > 1100):
-                familia = 11.9 * children;
-                break;
+        let params = {
+            price: parseFloat(price),
+            hours: parseFloat(hours),
+            children: parseFloat(children),
         }
+        let {bruto, familia} = await this.get('salarial', params) || {};
         return {
             bruto,
             familia
