@@ -92,7 +92,6 @@ export default {
             if (valid) {
                 this.loading = true;
                 this.result = await service.ex02(this.list);
-                console.log(this.result);
                 this.end = !this.end;
                 this.loading = false;
             }

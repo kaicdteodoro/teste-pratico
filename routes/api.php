@@ -19,4 +19,6 @@ use Illuminate\Support\Facades\Route;
 Route::controller(MainController::class)
     ->group(static function (Router $router) {
         $router->get('salarial', 'salarial');
+        $router->get('fibonacci', 'fibonacci');
+        $router->get('sequencia', 'sequencia');
     });

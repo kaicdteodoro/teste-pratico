@@ -8,37 +8,18 @@ class MainService extends Service {
             children: parseFloat(children),
         }
         let {bruto, familia} = await this.get('salarial', params) || {};
-        return {
-            bruto,
-            familia
-        }
+        return {bruto, familia}
     }
 
     async ex02(list) {
-        let smaller = list[0], bigger = list[0];
-        list.map(value => {
-            switch (true) {
-                case (value < smaller):
-                    smaller = value;
-                    break;
-                case (value > bigger):
-                    bigger = value
-                    break;
-            }
-        });
+        let {smaller, bigger} = await this.get('sequencia', {list}) || {};
         return {smaller, bigger}
     }
 
-    async ex03(total) {
-        let result = [];
-        result[0] = result[1] = 1;
-        for (let i = 2; i < total; i++) {
-            let sum = result[i - 1] + result[i - 2];
-            if (sum <= total) {
-                result[i] = sum;
-            }
-        }
-        return result;
+    async ex03(reference) {
+        let {sequence} = await this.get('fibonacci', {reference}) || {};
+
+        return sequence;
     }
 }
 
