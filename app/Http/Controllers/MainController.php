@@ -35,19 +35,16 @@ class MainController extends Controller
     {
         $request->validate(["list" => "required|array"]);
         $list = $request->get("list");
-        $smaller = $bigger = $list[0];
+        $smaller = $secondBigger =  min($list);
+        $bigger = max($list);
+
         foreach ($list as $value) {
-            switch (true) {
-                case ($value < $smaller):
-                    $smaller = $value;
-                    break;
-                case ($value > $bigger):
-                    $bigger = $value;
-                    break;
+            if($value < $bigger && $value > $secondBigger) {
+                $secondBigger = $value;
             }
         }
 
-        return compact('smaller', 'bigger');
+        return compact('smaller', 'bigger', 'secondBigger');
     }
 
     public function fibonacci(Request $request): array
@@ -58,13 +55,14 @@ class MainController extends Controller
         $reference = (float)$request->get('reference');
         for ($i = 2; $i < $reference; $i++) {
             $sum = $sequence[$i - 2] + $sequence[$i - 1];
-            if ($sum <= $reference) {
-                $sequence[$i] = $sum;
-            } else {
-                break;
+            if ($sequence[$i - 1] % 2 == 0) {
+                $sum += $sequence[$i - 3];
             }
+            $sequence[$i] = $sum;
         }
 
-        return compact('sequence');
+        $has = in_array($reference, $sequence);
+
+        return compact('sequence', 'has');
     }
 }

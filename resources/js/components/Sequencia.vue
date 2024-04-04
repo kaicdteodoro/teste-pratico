@@ -84,6 +84,7 @@ export default {
         result: {
             bigger: undefined,
             smaller: undefined,
+            secondBigger: undefined,
         }
     }),
     methods: {
@@ -132,7 +133,7 @@ export default {
             return `${this.list.length}/${this.length}`;
         },
         print() {
-            return `Maior: ${this.result.bigger} | Menor: ${this.result.smaller}`;
+            return `Maior: ${this.result.bigger} | Segundo Maior: ${this.result.secondBigger} | Menor: ${this.result.smaller}`;
         }
     },
 }

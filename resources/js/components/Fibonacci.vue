@@ -27,7 +27,7 @@
                             <v-spacer/>
                             <v-card
                                 class="overflow-x-auto mx-5"
-                                max-width="1000"
+                                max-width="900"
                                 variant="text"
                                 :loading="loading"
                             >
@@ -58,6 +58,7 @@ export default {
     data: () => ({
         list: [],
         limit: 0,
+        check: false,
         loading: false,
         timeout: undefined,
     }),
@@ -66,14 +67,11 @@ export default {
             let {valid} = await this.$refs.form.validate() || {};
             if (valid) {
                 this.loading = true;
-                this.list = await service.ex03(parseInt(this.limit));
+                let {sequence, has} = await service.ex03(parseInt(this.limit));
+                this.list = sequence;
+                this.check = has;
                 this.loading = false;
             }
-        }
-    },
-    computed: {
-        check() {
-            return this.list.includes(parseInt(this.limit), this.list.length - 1);
         }
     },
 }

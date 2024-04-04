@@ -12,14 +12,14 @@ class MainService extends Service {
     }
 
     async ex02(list) {
-        let {smaller, bigger} = await this.get('sequencia', {list}) || {};
-        return {smaller, bigger}
+        let {smaller, bigger, secondBigger} = await this.get('sequencia', {list}) || {};
+        return {smaller, bigger, secondBigger}
     }
 
     async ex03(reference) {
-        let {sequence} = await this.get('fibonacci', {reference}) || {};
+        let {sequence, has} = await this.get('fibonacci', {reference}) || {};
 
-        return sequence;
+        return {sequence, has};
     }
 }
 
